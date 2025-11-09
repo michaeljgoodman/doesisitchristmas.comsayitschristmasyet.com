@@ -1,0 +1,51 @@
+name: Run tests with GeoIP databases
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      MAXMIND_ACCOUNT_ID: ${{ secrets.MAXMIND_ACCOUNT_ID }}
+      MAXMIND_LICENSE_KEY: ${{ secrets.MAXMIND_LICENSE_KEY }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'   # or whatever you use
+
+      - name: Install geoipupdate
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y geoipupdate
+
+      - name: Configure geoipupdate
+        run: |
+          mkdir -p ~/.config/GeoIP
+          cat > ~/.config/GeoIP/GeoIP.conf <<EOF
+          AccountID ${MAXMIND_ACCOUNT_ID}
+          LicenseKey ${MAXMIND_LICENSE_KEY}
+          EditionIDs GeoLite2-City GeoLite2-Country GeoLite2-ASN
+          DatabaseDirectory /tmp/geoip
+          EOF
+
+      - name: Download GeoIP databases
+        run: |
+          mkdir -p /tmp/geoip
+          geoipupdate -v -d /tmp/geoip -f ~/.config/GeoIP/GeoIP.conf
+
+      - name: Install project dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run pytest
+        env:
+          GEOIP_DB_PATH: /tmp/geoip   # optional, if your app reads this env var
+        run: pytest -v
