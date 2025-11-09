@@ -20,7 +20,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'   # or whatever you use
+          python-version: '3.11'
 
       - name: Install geoipupdate
         run: |
@@ -40,12 +40,20 @@ jobs:
       - name: Download GeoIP databases
         run: |
           mkdir -p /tmp/geoip
-          geoipupdate -v -d /tmp/geoip -f ~/.config/GeoIP/GeoIP.conf
+          geoipupdate -v -f ~/.config/GeoIP/GeoIP.conf
+
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
 
       - name: Install project dependencies
-        run: pip install -r requirements.txt
+        run: |
+          # Add Poetry to PATH for this step
+          export PATH="$HOME/.local/bin:$PATH"
+          poetry install
 
       - name: Run pytest
         env:
-          GEOIP_DB_PATH: /tmp/geoip   # optional, if your app reads this env var
-        run: pytest -v
+          GEOIP_DB_PATH: /tmp/geoip   # if your app reads this
+          PATH: $HOME/.local/bin:$PATH
+        run: poetry run pytest -v
