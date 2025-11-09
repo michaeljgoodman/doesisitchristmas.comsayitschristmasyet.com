@@ -1,6 +1,7 @@
 """
 Server that fetches isitchristmas.com, renders it, and returns a screenshot.
 """
+
 import re
 import ipaddress
 from pathlib import Path
@@ -12,15 +13,20 @@ from playwright.async_api import async_playwright
 import geoip2.database
 import geoip2.errors
 
+
 app = FastAPI(title="IsItChristmas Screenshot Service")
 
 # Mount static files directory for CSS
 app.mount("/styles", StaticFiles(directory="styles"), name="styles")
 
+
+
 # Try to load MaxMind GeoIP database (optional)
 # Check multiple possible locations
 GEOIP_DB_PATHS = [
-    Path(r"C:\ProgramData\MaxMind\GeoIPUpdate\GeoIP\GeoLite2-Country.mmdb"),  # Windows MaxMind default
+    Path(
+        r"C:\ProgramData\MaxMind\GeoIPUpdate\GeoIP\GeoLite2-Country.mmdb"
+    ),  # Windows MaxMind default
     Path("GeoLite2-Country.mmdb"),  # Current directory
     Path("/usr/share/GeoIP/GeoLite2-Country.mmdb"),  # Linux default
 ]
@@ -103,14 +109,11 @@ async def capture_isitchristmas_screenshot(country_code: str = "SE") -> bytes:
                 modified_body = re.sub(
                     r'var country = ["\'][A-Z]{2}["\'];',
                     f'var country = "{country_code}";',
-                    body
+                    body,
                 )
 
                 # Return the modified HTML
-                await route.fulfill(
-                    response=response,
-                    body=modified_body
-                )
+                await route.fulfill(response=response, body=modified_body)
             else:
                 # Let other resources (JS, CSS, images) load normally
                 await route.continue_()
@@ -163,7 +166,7 @@ async def get_screenshot(request: Request, country: Optional[str] = None):
         media_type="image/png",
         headers={
             "Content-Disposition": f"inline; filename=isitchristmas-{country}.png"
-        }
+        },
     )
 
 
@@ -190,6 +193,7 @@ def main():
     Entry point for running the server
     """
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
 
 
