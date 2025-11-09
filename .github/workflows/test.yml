@@ -53,7 +53,5 @@ jobs:
           poetry install
 
       - name: Run pytest
-        env:
-          GEOIP_DB_PATH: /tmp/geoip   # if your app reads this
-          PATH: $HOME/.local/bin:$PATH
-        run: poetry run pytest -v
+        run: |
+          poetry run pytest -v
