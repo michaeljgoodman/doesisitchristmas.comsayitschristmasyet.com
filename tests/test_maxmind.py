@@ -49,9 +49,6 @@ def test_invalid_ip_defaults_to_gb():
 )
 def test_real_ip_country_codes_are_valid(ip):
     """Real IPs should return a valid ISO 3166-1 alpha-2 country code."""
-    if maxmind.geoip_reader is None:
-        pytest.skip("GeoIP database not found; skipping real lookup tests.")
-
     code = maxmind.get_country_from_ip(ip)
 
     assert isinstance(code, str), f"Expected string, got {type(code)}"
