@@ -1,4 +1,4 @@
-name: Run tests with GeoIP databases
+name: Unit tests
 
 on:
   push:
