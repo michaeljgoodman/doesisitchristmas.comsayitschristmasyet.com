@@ -18,8 +18,8 @@ def gen_rand_ipv4():
     return ".".join(octets)
 
 
-def test_100_random_ips():
-    for _ in range(100):
+def test_1000_random_ips():
+    for _ in range(1000):
         ipv4 = gen_rand_ipv4()
         code = maxmind.get_country_from_ip(ipv4)
         is_valid_country(code)
