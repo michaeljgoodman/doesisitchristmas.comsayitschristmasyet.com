@@ -171,3 +171,43 @@ body {
     border-radius: 10px;
     margin-top: 20px;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 480px) {
+    .header h1 {
+        font-size: 1.8em;
+    }
+
+    .header p {
+        font-size: 1em;
+    }
+
+    .progress-container {
+        padding: 20px 15px;
+    }
+
+    .stages {
+        margin-bottom: 40px;
+    }
+
+    .stage {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .stage-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 18px;
+        margin-bottom: 10px;
+    }
+
+    .stage-label {
+        font-size: 11px;
+        line-height: 1.2;
+    }
+
+    .connector {
+        top: 22.5px;
+    }
+}
