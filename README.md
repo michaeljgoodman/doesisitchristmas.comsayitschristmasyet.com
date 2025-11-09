@@ -1,4 +1,5 @@
-![example workflow](https://github.com/michaeljgoodman/doesisitchristmas.comsayitschristmasyet.com/actions/workflows/test.yml/badge.svg)
+![Unit Test Badge](https://github.com/michaeljgoodman/doesisitchristmas.comsayitschristmasyet.com/actions/workflows/test.yml/badge.svg)
+![Code Format Badge](https://github.com/michaeljgoodman/doesisitchristmas.comsayitschristmasyet.com/actions/workflows/code_format.yml/badge.svg)
 # IsItChristmas Screenshot Service
 
 A Python web service that fetches [isitchristmas.com](https://isitchristmas.com), renders it server-side using a headless browser, and returns a screenshot.
