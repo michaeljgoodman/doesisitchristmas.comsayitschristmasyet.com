@@ -1,0 +1,173 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.container {
+    max-width: 1200px;
+    width: 100%;
+}
+
+.header {
+    text-align: center;
+    color: white;
+    margin-bottom: 50px;
+}
+
+.header h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+}
+
+.header p {
+    font-size: 1.2em;
+    opacity: 0.9;
+}
+
+.progress-container {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.stages {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    position: relative;
+    margin-bottom: 60px;
+}
+
+.stage {
+    flex: 1;
+    text-align: center;
+    position: relative;
+    opacity: 0.3;
+    transition: opacity 0.3s ease;
+}
+
+.stage.active {
+    opacity: 1;
+}
+
+.stage.completed {
+    opacity: 1;
+}
+
+.stage-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: #e0e0e0;
+    margin: 0 auto 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    transition: all 0.3s ease;
+}
+
+.stage.active .stage-icon {
+    background: #667eea;
+    color: white;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+.stage.completed .stage-icon {
+    background: #4caf50;
+    color: white;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+.stage-label {
+    font-size: 14px;
+    font-weight: 600;
+    color: #333;
+}
+
+.connector {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: -1;
+}
+
+.connector-progress {
+    height: 100%;
+    background: #667eea;
+    width: 0%;
+    transition: width 0.5s ease;
+}
+
+.result-container {
+    display: none;
+    text-align: center;
+}
+
+.result-container.visible {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.screenshot {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.spinner {
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #667eea;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.error {
+    color: #f44336;
+    padding: 20px;
+    background: #ffebee;
+    border-radius: 10px;
+    margin-top: 20px;
+}

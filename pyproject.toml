@@ -1,0 +1,23 @@
+[tool.poetry]
+name = "isitchristmas-screenshot"
+version = "0.1.0"
+description = "Server that screenshots isitchristmas.com"
+authors = ["Your Name <you@example.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+fastapi = "^0.109.0"
+uvicorn = {extras = ["standard"], version = "^0.27.0"}
+playwright = "^1.41.0"
+geoip2 = "^4.8.0"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^7.4.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+start = "app:main"

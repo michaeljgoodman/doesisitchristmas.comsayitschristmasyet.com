@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Does isitchristmas.com say it's Christmas yet?</title>
+    <link rel="stylesheet" href="/styles/main.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎄 Does isitchristmas.com say it's Christmas yet? 🎄</h1>
+            <p>Sit back and relax while we check the site for you, saving you time and energy</p>
+        </div>
+
+        <div class="progress-container">
+            <div class="stages">
+                <div class="connector">
+                    <div class="connector-progress" id="progress-bar"></div>
+                </div>
+
+                <div class="stage" id="stage-1">
+                    <div class="stage-icon">🌐</div>
+                    <div class="stage-label">Fetching your IP</div>
+                </div>
+
+                <div class="stage" id="stage-2">
+                    <div class="stage-icon">📍</div>
+                    <div class="stage-label">Looking up location</div>
+                </div>
+
+                <div class="stage" id="stage-3">
+                    <div class="stage-icon">📡</div>
+                    <div class="stage-label">Making request</div>
+                </div>
+
+                <div class="stage" id="stage-4">
+                    <div class="stage-icon">💉</div>
+                    <div class="stage-label">Injecting JavaScript</div>
+                </div>
+
+                <div class="stage" id="stage-5">
+                    <div class="stage-icon">📸</div>
+                    <div class="stage-label">Results are in!</div>
+                </div>
+            </div>
+
+            <div class="result-container" id="result">
+                <!-- Screenshot will appear here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentStage = 0;
+        const stages = [
+            { id: 'stage-1', duration: 800 },
+            { id: 'stage-2', duration: 1000 },
+            { id: 'stage-3', duration: 0 },  // Dynamic - starts with request
+            { id: 'stage-4', duration: 0 },  // Dynamic - appears after request starts
+            { id: 'stage-5', duration: 0 }   // Dynamic - appears when screenshot ready
+        ];
+
+        function activateStage(index) {
+            if (index >= stages.length) return;
+
+            const stageElement = document.getElementById(stages[index].id);
+            stageElement.classList.add('active');
+
+            // Update progress bar
+            const progressBar = document.getElementById('progress-bar');
+            const progress = ((index + 1) / stages.length) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        function completeStage(index) {
+            if (index >= stages.length) return;
+
+            const stageElement = document.getElementById(stages[index].id);
+            stageElement.classList.remove('active');
+            stageElement.classList.add('completed');
+        }
+
+        async function runProgress() {
+            // Stage 1: Fetching IP (animated, not really fetching)
+            activateStage(0);
+            await sleep(stages[0].duration);
+            completeStage(0);
+
+            // Stage 2: Looking up location (animated, not really looking up)
+            activateStage(1);
+            await sleep(stages[1].duration);
+            completeStage(1);
+
+            // Stage 3: Making request (dynamic - actually making request now)
+            activateStage(2);
+
+            // Stage 4: Injecting JavaScript (dynamic - show immediately after request starts)
+            setTimeout(() => {
+                completeStage(2);
+                activateStage(3);
+            }, 500);
+
+            try {
+                // Actually fetch the screenshot
+                const response = await fetch('/screenshot');
+
+                if (!response.ok) {
+                    throw new Error('Failed to fetch screenshot');
+                }
+
+                const blob = await response.blob();
+                const imageUrl = URL.createObjectURL(blob);
+
+                // Complete stage 4
+                completeStage(3);
+
+                // Stage 5: Screenshot ready
+                activateStage(4);
+                await sleep(300);
+                completeStage(4);
+
+                // Display the screenshot
+                const resultContainer = document.getElementById('result');
+                resultContainer.innerHTML = `<img src="${imageUrl}" class="screenshot" alt="IsItChristmas Screenshot">`;
+                resultContainer.classList.add('visible');
+
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div class="error">
+                        <strong>Error:</strong> Failed to generate screenshot. Please try again.
+                    </div>
+                `;
+                document.getElementById('result').classList.add('visible');
+            }
+        }
+
+        function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+        }
+
+        // Start the progress automatically when page loads
+        window.addEventListener('load', () => {
+            setTimeout(runProgress, 500);
+        });
+    </script>
+</body>
+</html>
