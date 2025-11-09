@@ -29,7 +29,11 @@ poetry install
 
 ```bash
 poetry run playwright install chromium
+
+# For Debian
+poetry run playwright install-deps
 ```
+
 
 ### 4. GeoIP Database (Optional but Recommended)
 
